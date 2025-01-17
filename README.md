@@ -74,15 +74,6 @@ This Chatbot is an AI-powered chatbot that can assist users with various queries
 
 1. **Use the web interface to interact with the chatbot.**
 
-## File Structure
-
-
-ricks-chatbot/ ├── app.py # Flask application ├── bot_web.py # Tkinter application and web scraping ├── requirements.txt # Python dependencies ├── .env # Environment variables ├── data/ # Directory to store scraped data │ └── data.txt # Scraped data file ├── PKL_file/ # Directory to store index files ├── Templates/ # HTML templates for Flask │ └── bot_template.html # Chatbot web interface template └── Static/ # Static files (e.g., CSS, JS, images) └── ding-sound-246413.mp3 # Notification sound
-
-
-
-
-
 
 ## Troubleshooting
 
