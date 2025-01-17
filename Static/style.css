@@ -1,0 +1,241 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    overflow-y: auto;
+}
+
+.chathidde {
+    display: none;
+}
+
+.togal_icon img {
+    margin-left: 94vw;
+    margin-top: 88vh;
+    cursor: pointer;
+}
+
+.nav_icon {
+    z-index: 100;
+    position: fixed;
+    color: black;
+    background-color: green;
+    font-size: 20px;
+    height: 10%;
+    display: flex;
+    width: 387px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.bot_nav {
+    padding: 4%;
+}
+
+.nav_icon img {
+    background-color: black;
+    border-radius: 20px;
+    margin: 2%;
+}
+
+.coming_message {
+    display: flex;
+    background-color: green;
+    width: 290px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    color: white;
+    margin-left: 12%;
+    margin-top: 30%;
+}
+
+@keyframes slideIn {
+    0% { opacity: 0; transform: translateY(100px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.coming_message {
+    animation: slideIn 0.5s ease-in-out forwards;
+}
+
+@keyframes optionslide {
+    0% { opacity: 0; transform: translateY(50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.options {
+    animation: slideIn 1s ease-in-out forwards;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 15%;
+    top: 35%;
+}
+
+.options a {
+    padding: 5%;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    margin: 10%;
+    border: solid rgb(6, 0, 0);
+    text-decoration: none;
+    color: white;
+}
+
+.options a:hover {
+    background-color: rgb(255, 181, 42);
+    margin: 11%;
+}
+
+.online_order {
+    background-color: orange;
+    border-radius: 20px;
+}
+
+.start_message {
+    margin-top: 5%;
+}
+
+.icon {
+    margin-left: 8%;
+    margin-top: -8%;
+}
+
+.chatbot {
+    position: fixed;
+    width: 385px;
+    height: 9vh;
+    margin-top: 64vh;
+    margin-left: 1px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: rgb(3, 3, 74);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-message {
+    padding: 8px;
+    width: 25%;
+    color: rgb(0, 0, 0);
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    margin-left: 7%;
+    background-color: white;
+    align-self: flex-start;
+}
+
+.emoji1 img {
+    display: inline-block;
+    margin-left: 5%;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.bot-message {
+    padding: 8px;
+    margin-right: 10%;
+    margin-top: -2%;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border-top-right-radius: 0px;
+    background-color: green;
+    align-self: flex-end;
+    width: 30%;
+}
+
+.emoji2 img {
+    display: inline-block;
+    position: absolute;
+    margin-left: 89%;
+    margin-top: -10%;
+    width: 40px;
+    height: 40px;
+}
+
+.textbar {
+    position: relative;
+    align-items: center;
+}
+
+.creator {
+    margin-top: -1vh;
+    font-size: 10px;
+    color: rgb(255, 255, 255);
+}
+
+.creator a {
+    color: cyan;
+    text-decoration: none;
+}
+
+.chat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background: rgb(3, 3, 74);
+    top: 20%;
+    right: 7%;
+    border: solid rgb(37, 36, 36);
+    height: 73vh;
+    width: 387px;
+    border-radius: 20px;
+}
+
+.message {
+    display: flex;
+    position: relative;
+    word-wrap: break-word;
+    max-width: 60%;
+    margin-top: 30%;
+    align-items: flex-end;
+}
+
+.textbar input {
+    position: relative;
+    width: 60%;
+    padding: 7px;
+    height: 27px;
+    border-radius: 25px;
+    border: none;
+}
+
+#send {
+    position: relative;
+    height: 40px;
+    margin-left: 2%;
+    border: none;
+    cursor: pointer;
+    background-color: rgb(3, 3, 74);
+}
+
+.message span {
+    display: inline-block;
+}
+
+@keyframes chatappear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#chatContainer {
+    animation: chatappear 2s;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.togal_icon {
+    display: inline-block;
+}

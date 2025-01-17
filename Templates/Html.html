@@ -1,0 +1,198 @@
+ {% extends 'base.html' %}  <!-- It just apply the base.html format here   -->
+{% block body  %}
+    <!-- As a link -->
+    
+
+    <form action="/html" method="POST">  <!-- this action hepls to get the post from the page -->
+          <h3>Titlt:</h3>
+        <input type="text" name="title" id="title" >  </input>  
+          <h3>Description:</h3>
+        <input type="text" name="description" id="description" >  </input>  
+        
+    <button class="submit"type="submit">submit</button>
+     </form>
+
+
+    <h2>HTML Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis qui fugiat illo,
+        eveniet quis doloribus eaque asperiores. A accusantium ut deleniti tempore. Maxime.</h2>
+
+    
+    
+
+
+    <div class="table">
+
+        
+        
+                {% if alltodo|length==0 %}
+                <div class="alert alert-warning" role="alert">
+                    No Record found!
+                  </div>
+
+               
+                    
+                {% else %}
+
+                <table class="table">
+                    <thead>
+                      <tr>
+                       
+                        <th scope="col">sno</th>
+                        <th scope="col">title</th>
+                        <th scope="col">description</th>
+                        <th scope="col">time</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                
+
+                
+                    
+
+              {% for todo_ex in alltodo  %}
+              <tr>
+                
+              <th scope="row">{{todo_ex.sno}}</th>
+
+                <td>{{todo_ex.title}}</td>        <!--- we write variable in this bracket-->
+                <td>{{todo_ex.description}}</td>
+                <td>{{todo_ex.date_created}}</td>
+                <td>
+                   
+                  <a href="/delete/{{todo_ex.sno}}"><button class="btn1"> Delete</button> </a> 
+                  <a href="/update/{{todo_ex.sno}}"><button class="btn2"> Update</button></a>
+                    
+                    
+                </td>
+                </tr>
+           
+                
+              {% endfor %}
+             {% endif %}
+
+            </tbody>
+        </table>
+           
+    </div>
+    
+</body>
+</html>
+<style>
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .box a{
+        display: flex;
+        list-style: none;
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+    }
+
+    .box {
+        
+        background-color:rgba(211, 211, 211, 0.72);
+    }
+    .table {
+        width: 100vmax;
+        
+    }
+    .table th{
+        
+        padding-right: 70px;
+    }
+    .table td {
+        
+        padding-right: 70px;
+    }
+
+    table {
+        padding-left: 20% ;
+    }
+
+    .alert.alert-warning {
+        background-color: rgb(234, 123, 123);
+        width:40vw;
+        height: 5vh;
+        justify-content: center;
+        align-items: center;
+        
+    }
+
+    .search input[type="text"] { 
+        border-radius:10px;
+        
+
+    }
+    .search form{
+       position: absolute;
+       right: 4%;
+        display: flex;
+        
+
+        
+    }
+
+   
+    button span{
+        color: blue;
+        border-radius:12px;
+        
+        
+
+    }
+    
+    
+
+
+    input[type="text"] {
+        border: solid 1px black;
+        height: 34px;
+        margin-left: 0px;
+        width: 80%;
+    }
+
+    .submit{
+        margin-top: 20px;
+        width: 100px;
+        height: 30px;
+        border-radius: 12px;
+        background-color: rgb(5, 60, 60);
+        color: aliceblue;
+    }
+
+    .btn1{
+        width: 90px;
+        height: 30px;
+        border-radius: 12px;
+        margin-left: 50px;
+    }
+
+    .btn1:hover {
+        background-color: gray;
+    }
+
+    .btn2 {
+        width: 90px;
+        height: 30px;
+        border-radius:12px;
+        margin-left: 10px;
+    }
+
+    .btn2:hover {
+        background-color: gray;
+    }
+
+    
+
+    
+
+   
+</style>
+
+{% endblock body  %}
+

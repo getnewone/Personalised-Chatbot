@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern ChatBot</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="chat-toggle" id="toggleChatBtn">
+        <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/chat.png" alt="Toggle Chat">
+    </div>
+    <div class="min-h-screen bg-dark-blue flex items-center justify-center p-4">
+        <div class="card" id="chatContainer">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <img width="48" height="48" src="https://img.icons8.com/color/48/message-bot.png" alt="Bot Icon" class="bot-icon">
+                    ChatBot
+                </h2>
+            </div>
+            
+            <div class="card-content" id="chatMessages">
+                <div class="coming_message">
+                    <pre class="start_message">Hello👋!! It's Great to see you. 
+Welcome to our board,
+<span><b>Let's blend your cravings with our creamy 
+creations!</b></span></pre>
+                </div>
+
+                <hr>
+
+                {% for message in chat_history %}
+                    {% if message.user %}
+                    <div class="message-container user-container">
+                        <div class="message user-message">
+                            {{ message.user }}
+                           
+                        </div>
+                        <img width="40" height="40" src="https://img.icons8.com/office/40/user.png" alt="user"/>
+
+                    </div>
+                    {% endif %}
+                    
+                    <div class="message-container bot-container">
+                        <img width="48" height="48" src="https://img.icons8.com/color/48/message-bot.png" alt="Bot Icon" class="bot-icon">
+                        <div class="message bot-message">
+                            {{ message.bot | safe }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="card-footer">
+                <form id="chatForm" method="POST">
+                    <div class="input-group">
+                        <input type="text" id="user_input" name="user_input" placeholder="Type your message..." class="input" required>
+                        <button type="submit" class="button">
+                            <img width="23" height="23" src="https://img.icons8.com/ios-glyphs/30/filled-sent.png" alt="Send">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+$(function () {
+    $('#chatForm').submit(function (event) {
+        event.preventDefault();
+        var userInput = $('#user_input').val();
+        $('#user_input').val('');
+
+        // Input validation
+    if (!userInput.trim()) {
+        showErrorMessage("Please enter a message");
+        return;
+    }
+    
+    $('#user_input').val('');
+
+        // Add user message
+        $('#chatMessages').append(`
+            <div class="message-container user-container">
+                <div class="message user-message">${userInput}</div>
+                 <img width="30" height="30" src="https://img.icons8.com/office/40/user.png" alt="user"/>
+            </div>
+        `);
+
+        // Show typing indicator
+        const indicator = $('<div class="message bot-message typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>');
+        $('#chatMessages').append(indicator);
+        scrollToBottom();
+
+        // Send AJAX request
+        $.ajax({
+            type: 'POST',
+            url: '/Pikatro/bot',
+            data: { 'user_input': userInput },
+            timeout: 10000, // 10 second timeout
+            success: function (response) {
+                indicator.remove();
+                var audio = new Audio('/Static/ding-sound-246413.mp3');
+                audio.play().catch(function(error) {
+                    console.log("Audio play failed:", error);
+                });
+                $('#chatMessages').append(`
+                    <div class="message-container bot-container">
+                         <img width="48" height="48" src="https://img.icons8.com/color/48/message-bot.png" alt="Bot Icon" class="bot-icon">
+                        <div class="message bot-message">${response}</div>
+                    </div>
+                `);
+                scrollToBottom();
+            },
+            error: function(xhr, status, error) {
+        indicator.remove();
+        console.error('Error:', error);
+        let errorMessage = "Something went wrong. Please try again.";
+        
+        if (xhr.status === 400) {
+            errorMessage = xhr.responseText;
+        } else if (status === 'timeout') {
+            errorMessage = "Request timed out. Please try again.";
+        } else if (!navigator.onLine) {
+            errorMessage = "Please check your internet connection.";
+        }
+        
+        $('#chatMessages').append(`
+            <div class="message-container bot-container">
+                <img width="48" height="48" src="https://img.icons8.com/color/48/message-bot.png" alt="Bot Icon" class="bot-icon">
+                <div class="message bot-message error-message">${errorMessage}</div>
+            </div>
+        `);
+        scrollToBottom();
+    }
+});
+    });
+
+    // Toggle chat show/hide
+    $('#toggleChatBtn').on('click', function() {
+        $('#chatContainer').toggleClass('show-chat');
+    });
+
+    function scrollToBottom() {
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
+
+function showErrorMessage(message) {
+    $('#chatMessages').append(`
+        <div class="message-container bot-container">
+            <img width="48" height="48" src="https://img.icons8.com/color/48/message-bot.png" alt="Bot Icon" class="bot-icon">
+            <div class="message bot-message error-message">${message}</div>
+        </div>
+    `);
+    scrollToBottom();
+}
+</script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.bg-dark-blue {
+    background-color: #ededf3;
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.card {
+    width: 100%;
+    max-width: 26rem;
+    height: 700px;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 30px;
+    right: 66px;
+    transform: translateY(150%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.card.show-chat {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.card-header {
+    background-color: #006622;
+    color: white;
+    padding: 1rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-title img {
+    background-color: #1e293b;
+}
+
+.bot-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.card-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.message {
+    max-width: 70%;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.bot-message {
+    background-color: #006622;
+    color: white;
+    align-self: flex-start;
+}
+
+.user-message {
+    margin-top: 0.5rem;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.card-footer {
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+}
+
+.button {
+    background-color: #006622;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background-color: #005511;
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.typing-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 1rem; /* Added more space between messages */
+}
+
+.user-container {
+    justify-content: flex-end;
+}
+
+.bot-container {
+    justify-content: flex-start;
+}
+
+.emoji {
+    font-size: 1.25rem;
+}
+
+.coming_message {
+    margin-bottom: 1rem; 
+    background-color:#005511 ;
+    color: whitesmoke;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 360px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+}
+
+.chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #006622;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transition: transform 0.2s ease;
+}
+
+.chat-toggle:hover {
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(0.5rem); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+.error-message {
+    background-color: #ff4444 !important;
+    color: white;
+}
+</style>
+</body>
+</html>
