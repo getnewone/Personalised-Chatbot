@@ -89,10 +89,3 @@ This Chatbot is an AI-powered chatbot that can assist users with various queries
 3. **Selenium WebDriver Issues:**
     - Ensure you have Chrome installed and the correct version of ChromeDriver.
 
-## Contributing
-
-Feel free to fork this repository and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License.
